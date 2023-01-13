@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Perfplot is a tool for visualizing performance results e.g. from the
+# output of dbench.
+# Copyright (C) Kostas Peletidis 23-Dec-2022
+#
+
