@@ -5,3 +5,48 @@
 # Copyright (C) Kostas Peletidis 23-Dec-2022
 #
 
+## Design
+#  =======
+# Perfplot takes as input a set of command line argument and a file containing
+# the test results.
+#
+# It processes the results to extract the actual data and generates one or more
+# data files. It also generates one or more gnuplot scripts.
+#
+# The data and script(s) are then fed into gnuplot in order to generate
+# the plots.
+#
+# The following diagram illustrates the main idea.
+#
+#  +--------------+       +----------+       +------------+       +---------+
+#  | Test results |------>|          |------>| Data files |------>|         |
+#  +--------------+       |          |       +------------+       |         |
+#                         | Perfplot |                            | Gnuplot |
+#  +----------------+     |          |       +---------------+    |         |
+#  | CLI parameters |---->|          |------>| Gnuplot files |--->|         |
+#  +----------------+     +----------+       +---------------+    +---------+
+#
+##
+parse_args () {
+  echo "parse_args: $*"
+}
+
+extract_data () {
+  echo "extract_data: $1"
+}
+
+generate_plot_scripts () {
+  echo "generate_plot_scripts: $1"
+}
+
+plot_data () {
+  echo "plot_data: $1"
+}
+
+parse_args $*
+extract_data "Extract data here"
+generate_plot_scripts "Generate gnuplot scripts here"
+plot_data "Plot data here"
+
+exit 0
+
