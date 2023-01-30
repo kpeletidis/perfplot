@@ -1,0 +1,43 @@
+# /home/kp/src/dbench/dbench -B fileio -c /home/kp/src/dbench/loadfiles/client.txt -D . 16
+dbench version 4.00 - Copyright Andrew Tridgell 1999-2004
+
+Running for 600 seconds with load '/home/kp/src/dbench/loadfiles/client.txt' and minimum warmup 120 secs
+failed to create barrier semaphore 
+15 of 16 processes prepared for launch   0 sec
+16 of 16 processes prepared for launch   0 sec
+releasing clients
+  16      1837   421.50 MB/sec  warmup   1 sec  latency 311.997 ms
+  16      4308   323.57 MB/sec  warmup   2 sec  latency 195.771 ms
+  16      7506   311.31 MB/sec  warmup   3 sec  latency 131.356 ms
+  16      9633   271.51 MB/sec  warmup   4 sec  latency 135.563 ms
+  16     11512   253.14 MB/sec  warmup   5 sec  latency 174.279 m
+........
+  16   1641169   198.47 MB/sec  execute 595 sec  latency 189.523 ms
+  16   1643746   198.51 MB/sec  execute 596 sec  latency 147.201 ms
+  16   1647310   198.70 MB/sec  execute 597 sec  latency 115.725 ms
+  16   1648890   198.59 MB/sec  execute 598 sec  latency 198.815 ms
+  16   1652120   198.72 MB/sec  execute 599 sec  latency 204.519 ms
+  16  cleanup 600 sec
+   0  cleanup 600 sec
+
+ Operation                Count    AvgLat    MaxLat
+ --------------------------------------------------
+ Deltree                     96    11.754   105.666
+ Flush                   266228    28.404   507.061
+ Close                  2789955     0.002     0.270
+ LockX                    12374     0.004     0.048
+ Mkdir                       48     0.003     0.013
+ Rename                  160833     0.519   292.096
+ ReadX                  5954043     0.020   434.445
+ WriteX                 1893725     0.132   289.590
+ Unlink                  767075     0.724   434.802
+ UnlockX                  12374     0.003     0.030
+ FIND_FIRST             1331032     0.025    91.333
+ SET_FILE_INFORMATION    309354     0.414   426.964
+ QUERY_FILE_INFORMATION  603326     0.002     0.138
+ QUERY_PATH_INFORMATION 3442606     0.032   292.040
+ QUERY_FS_INFORMATION    631266     0.003     3.605
+ NTCreateX              3798062     0.172   426.965
+
+Throughput 198.721 MB/sec  16 clients  16 procs  max_latency=507.066 ms
+
