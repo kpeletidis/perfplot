@@ -27,19 +27,26 @@
 #  +----------------+     +----------+       +---------------+    +---------+
 #
 ##
-parse_args () {
+function parse_args() {
   echo "parse_args: $*"
 }
 
-extract_data () {
+function extract_data() {
   echo "extract_data: $1"
+  # tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
+  # tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
+  # tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
+  # grep -w latency $1 > "$tmpfile"
+  # grep -w warmup $(tmpfile) > "$tmpwarmup"
+  # grep -w execute $(tmpfile) > "$tmpexecute"
+  #
 }
 
-generate_plot_scripts () {
+function generate_plot_scripts() {
   echo "generate_plot_scripts: $1"
 }
 
-plot_data () {
+function plot_data() {
   echo "plot_data: $1"
 }
 
