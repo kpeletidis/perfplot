@@ -27,18 +27,24 @@
 #  +----------------+     +----------+       +---------------+    +---------+
 #
 ##
+## Configuration (global) variables go here
+infile=""
+
+## This function should parse CLI arguments and assign the correct values
+## to the global configuration variables.
 function parse_args() {
   echo "parse_args: $*"
+  infile="$1"
 }
 
 function extract_data() {
-  echo "extract_data: $1"
-  # tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
-  # tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
-  # tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
-  # grep -w latency $1 > "$tmpfile"
-  # grep -w warmup $(tmpfile) > "$tmpwarmup"
-  # grep -w execute $(tmpfile) > "$tmpexecute"
+  echo "extract_data: infile=$1"
+  tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
+  tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
+  tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
+  grep -w latency $1 > "$tmpfile"
+  grep -w warmup "$tmpfile" > "$tmpwarmup"
+  grep -w execute "$tmpfile" > "$tmpexecute"
   #
 }
 
@@ -51,7 +57,7 @@ function plot_data() {
 }
 
 parse_args $*
-extract_data "Extract data here"
+extract_data "$infile"
 generate_plot_scripts "Generate gnuplot scripts here"
 plot_data "Plot data here"
 
