@@ -44,6 +44,10 @@ function parse_args() {
 
 function extract_data_dbench() {
   echo "extract_data_dbench: infile=$1"
+}
+
+function extract_data() {
+  echo "extract_data: infile=$1"
   tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
   tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
   tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
