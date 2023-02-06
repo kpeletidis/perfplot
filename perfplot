@@ -55,10 +55,6 @@ function extract_data() {
   grep -w warmup "$tmpfile" > "$tmpwarmup"
   grep -w execute "$tmpfile" > "$tmpexecute"
   #
-}
-
-function extract_data() {
-  echo "extract_data: infile=$1"
   extract_data_dbench "$1"
 }
 
