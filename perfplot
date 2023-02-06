@@ -30,15 +30,20 @@
 ## Configuration (global) variables go here
 infile=""
 
+function parse_args_dbench() {
+  echo "parse_args_dbench: $*"
+}
+
 ## This function should parse CLI arguments and assign the correct values
 ## to the global configuration variables.
 function parse_args() {
   echo "parse_args: $*"
   infile="$1"
+  parse_args_dbench $*
 }
 
-function extract_data() {
-  echo "extract_data: infile=$1"
+function extract_data_dbench() {
+  echo "extract_data_dbench: infile=$1"
   tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
   tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
   tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
@@ -46,6 +51,18 @@ function extract_data() {
   grep -w warmup "$tmpfile" > "$tmpwarmup"
   grep -w execute "$tmpfile" > "$tmpexecute"
   #
+}
+
+function extract_data() {
+  echo "extract_data: infile=$1"
+  extract_data_dbench "$1"
+}
+
+function generate_plot_scripts_dbench() {
+  echo "generate_plot_scripts_dbench: $1"
+  # For dbench plots:
+  # Use columns 6:3 for throughput plots
+  # Use columns 6:9 for latency plots
 }
 
 function generate_plot_scripts() {
