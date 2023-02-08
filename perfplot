@@ -29,6 +29,9 @@
 ##
 ## Configuration (global) variables go here
 infile=""
+temp1=""
+temp2=""
+outfile=""
 
 function parse_args_dbench() {
   echo "parse_args_dbench: $*"
@@ -38,49 +41,83 @@ function parse_args_dbench() {
 ## to the global configuration variables.
 function parse_args() {
   echo "parse_args: $*"
+  #TODO: Add proper parsing
   infile="$1"
+  outfile="$2"
   parse_args_dbench $*
 }
 
 function extract_data_dbench() {
   echo "extract_data_dbench: infile=$1"
-}
-
-function extract_data() {
-  echo "extract_data: infile=$1"
   tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
   tmpwarmup=$(mktemp /tmp/perfplot-warmup.XXXXXX)
   tmpexecute=$(mktemp /tmp/perfplot-execute.XXXXXX)
   grep -w latency $1 > "$tmpfile"
-  grep -w warmup "$tmpfile" > "$tmpwarmup"
+  grep -w warmup "$tmpfile" > "$tmpwarmup"  # Just in case we need it
   grep -w execute "$tmpfile" > "$tmpexecute"
   #
+  temp1="$tmpwarmup"
+  temp2="$tmpexecute"
 }
 
 function extract_data() {
   echo "extract_data: infile=$1"
+  #
   extract_data_dbench "$1"
 }
 
 function generate_plot_scripts_dbench() {
-  echo "generate_plot_scripts_dbench: $1"
+  echo "generate_plot_scripts_dbench: $1 $2"
   # For dbench plots:
   # Use columns 6:3 for throughput plots
   # Use columns 6:9 for latency plots
+  #
+  # TODO: Extract units for xlabel and ylabel from infile.
+  #
+  # set terminal png nocrop enhanced size 1280,960 font "arial,12.0"
+  # set output 'mythroughput.png'
+  # set title 'Throughput plot'
+  # set xlabel 'Time (sec)'
+  # set ylabel 'Throughput (MB/sec)'
+  # plot 'mydata.dat' u 6:3 with lines
+  # set output 'mylatency.png'
+  # set title 'Latency plot'
+  # set xlabel 'Time (sec)'
+  # set ylabel 'Latency (ms)'
+  # plot 'mydata.dat' u 6:9 with lines
+  outfile="$2.gnuplot"
+  echo "generate_plot_scripts_dbench: Output: $outfile"
+  echo > "$outfile"
+  # Throughput
+  echo "set terminal png nocrop enhanced size 1280,960 font \"arial,12.0\"
+        set output '"$2"_dbench_throughput.png'
+	set title 'Throughput plot'
+	set xlabel 'Time (sec)'
+	set ylabel 'Throughput (MB/sec)'
+	plot '"$temp2"' u 6:3 with lines" >> "$outfile"
+  # Latency
+  echo "set terminal png nocrop enhanced size 1280,960 font \"arial,12.0\"
+        set output '"$2"_dbench_latency.png'
+	set title 'Latency plot'
+	set xlabel 'Time (sec)'
+	set ylabel 'Latency (ms)'
+	plot '"$temp2"' u 6:9 with lines" >> "$outfile"
 }
 
 function generate_plot_scripts() {
-  echo "generate_plot_scripts: $1"
+  echo "generate_plot_scripts: in:$1 out:$2"
+  generate_plot_scripts_dbench $1 $2
 }
 
 function plot_data() {
-  echo "plot_data: $1"
+  echo "plot_data: Plotting gnuplot script $1"
+  gnuplot "$1"
 }
 
 parse_args $*
 extract_data "$infile"
-generate_plot_scripts "Generate gnuplot scripts here"
-plot_data "Plot data here"
+generate_plot_scripts "$infile" "$outfile"
+plot_data "$outfile"
 
 exit 0
 
