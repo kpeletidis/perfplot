@@ -94,14 +94,14 @@ function generate_plot_scripts_dbench() {
 	set title 'Throughput plot'
 	set xlabel 'Time (sec)'
 	set ylabel 'Throughput (MB/sec)'
-	plot '"$temp2"' u 6:3 with lines" >> "$outfile"
+	plot '"$temp2"' u 6:3 title 'Throughput' with lines" >> "$outfile"
   # Latency
   echo "set terminal png nocrop enhanced size 1280,960 font \"arial,12.0\"
         set output '"$2"_dbench_latency.png'
 	set title 'Latency plot'
 	set xlabel 'Time (sec)'
 	set ylabel 'Latency (ms)'
-	plot '"$temp2"' u 6:9 with lines" >> "$outfile"
+	plot '"$temp2"' u 6:9 title 'Latency' with lines" >> "$outfile"
 }
 
 function generate_plot_scripts() {
