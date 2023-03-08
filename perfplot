@@ -42,9 +42,14 @@ function parse_args_dbench() {
 function parse_args() {
   echo "parse_args: $*"
   #TODO: Add proper parsing
-  infile="$1"
-  outfile="$2"
-  parse_args_dbench $*
+  if [ $# = 2 ]; then
+    infile="$1"
+    outfile="$2"
+    parse_args_dbench $*
+  else
+    echo "Usage: $0 <input_fie> <output_file>"
+    exit -1
+  fi
 }
 
 function extract_data_dbench() {
