@@ -47,11 +47,14 @@ function parse_args() {
     outfile="$2"
     parse_args_dbench $*
   else
-    echo "Usage: $0 <input_fie> <output_file>"
+    echo "Usage: $0 <input_file> <output_file>"
     exit -1
   fi
 }
 
+## Data extraction for dbench.
+## Parameters:
+## $1: Input file to process.
 function extract_data_dbench() {
   echo "extract_data_dbench: infile=$1"
   tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
@@ -65,12 +68,21 @@ function extract_data_dbench() {
   temp2="$tmpexecute"
 }
 
+## Top level function for data extraction.
+## Call tool-specific data extraction functions from here.
+## Parameters:
+## $1: Input file to process.
 function extract_data() {
   echo "extract_data: infile=$1"
   #
   extract_data_dbench "$1"
 }
 
+## Function to generate gnuplot scripts from dbench data
+## Parameters:
+## $1: Input file with dbench data.
+## $2: Name of the generated gnuplot script file. The extension "gnuplot"
+##     will be appended to it by this function.
 function generate_plot_scripts_dbench() {
   echo "generate_plot_scripts_dbench: $1 $2"
   # For dbench plots:
@@ -109,16 +121,31 @@ function generate_plot_scripts_dbench() {
 	plot '"$temp2"' u 6:9 title 'Latency' with lines" >> "$outfile"
 }
 
+## Top level function for the generation of the gnuplot scripts.
+## Call tool-specific script generators from here.
+## Parameters:
+## $1: Input file to process.
+## $2: Name of the generated gnuplot script.
+#TODO: Make this function append ".gnuplot" to $2 instead of the
+#      tool-specific function(s).
 function generate_plot_scripts() {
   echo "generate_plot_scripts: in:$1 out:$2"
   generate_plot_scripts_dbench $1 $2
 }
 
+## This function calls gnuplot with a generated script as its parameter.
+## Parameters:
+## 1: The name of the generated script gnuplot should run.
 function plot_data() {
   echo "plot_data: Plotting gnuplot script $1"
   gnuplot "$1"
 }
 
+## Main function
+## Parameters:
+## $1: Name of the input data file.
+## $2: Name of the generated gnuplot script. This is also the prefix of
+##     the generated plots.
 parse_args $*
 extract_data "$infile"
 generate_plot_scripts "$infile" "$outfile"
