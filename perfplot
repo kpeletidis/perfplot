@@ -83,6 +83,7 @@ function extract_data() {
 ## $1: Input file with dbench data.
 ## $2: Name of the generated gnuplot script file. The extension "gnuplot"
 ##     will be appended to it by this function.
+## $3: Extension of the generated gnuplot script, including the dot.
 function generate_plot_scripts_dbench() {
   echo "generate_plot_scripts_dbench: $1 $2"
   # For dbench plots:
@@ -102,7 +103,7 @@ function generate_plot_scripts_dbench() {
   # set xlabel 'Time (sec)'
   # set ylabel 'Latency (ms)'
   # plot 'mydata.dat' u 6:9 with lines
-  outfile="$2.gnuplot"
+  outfile="$2$3"
   echo "generate_plot_scripts_dbench: Output: $outfile"
   echo > "$outfile"
   # Throughput
@@ -130,7 +131,7 @@ function generate_plot_scripts_dbench() {
 #      tool-specific function(s).
 function generate_plot_scripts() {
   echo "generate_plot_scripts: in:$1 out:$2"
-  generate_plot_scripts_dbench $1 $2
+  generate_plot_scripts_dbench $1 $2 ".gnuplot"
 }
 
 ## This function calls gnuplot with a generated script as its parameter.
