@@ -127,8 +127,6 @@ function generate_plot_scripts_dbench() {
 ## Parameters:
 ## $1: Input file to process.
 ## $2: Name of the generated gnuplot script.
-#TODO: Make this function append ".gnuplot" to $2 instead of the
-#      tool-specific function(s).
 function generate_plot_scripts() {
   echo "generate_plot_scripts: in:$1 out:$2"
   generate_plot_scripts_dbench $1 $2 ".gnuplot"
