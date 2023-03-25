@@ -29,12 +29,36 @@
 ##
 ## Configuration (global) variables go here
 infile=""
+outfile=""
+flag_multirun=""
+
+## Helper global variables go here
+MULTIRUN_PATTERN="PACKAGE"
 temp1=""
 temp2=""
-outfile=""
+##
 
 function parse_args_dbench() {
   echo "parse_args_dbench: $*"
+}
+
+## Utility function to check if the input file in a log of multiple runs
+## of a test tool.
+## This is achieved by counting the instances of a certain pattern in the
+## file.
+## The pattern can be changed through the MULTIRUN_PATTERN global variable.
+## Parameters:
+## $1: Input file to process.
+function is_multirun_log() {
+  if [[ `grep "$MULTIRUN_PATTERN" $1 | wc -l` -gt 1 ]]; then
+    echo "This log includes multiple runs. Splitting to individual logs..."
+    return 0
+  elif  [[ `grep "$MULTIRUN_PATTERN" $1 | wc -l` -eq 1 ]]; then
+    return 1
+  else
+    echo "is_multirun_log: Log doesn't include "$MULTIRUN_PATTERN""
+    return -1
+  fi
 }
 
 ## This function should parse CLI arguments and assign the correct values
@@ -42,7 +66,7 @@ function parse_args_dbench() {
 function parse_args() {
   echo "parse_args: $*"
   #TODO: Add proper parsing
-  if [ $# = 2 ]; then
+  if [[ $# = 2 ]]; then
     infile="$1"
     outfile="$2"
     parse_args_dbench $*
@@ -52,9 +76,17 @@ function parse_args() {
   fi
 }
 
-## Data extraction for dbench.
+## Data extraction function for dbench.
+## This function creates three files:
+## - tmpfile stores the name of the file with the dbench data that
+##   can be plotted. It includes warmup and execution data.
+## - tmpwarmup includes only the warmup data of tmpfile.
+## - tmpexecute includes only the test execution data, without warmup.
 ## Parameters:
 ## $1: Input file to process.
+
+## TODO: Consider storing plot data together with the rest of the output
+## of perfplot, instead of using temporary files.
 function extract_data_dbench() {
   echo "extract_data_dbench: infile=$1"
   tmpfile=$(mktemp /tmp/perfplot-perdata.XXXXXX)
@@ -74,7 +106,16 @@ function extract_data_dbench() {
 ## $1: Input file to process.
 function extract_data() {
   echo "extract_data: infile=$1"
-  #
+  is_multirun_log $1
+  rv=$?
+  echo "extract_data: rv: $rv"
+  if [[ $rv -eq 0 ]]; then
+    echo "Ooooh, multirun log!"
+    flag_multirun=1
+  else
+    echo "This is NOT a multirun log"
+    flag_multirun=0
+  fi
   extract_data_dbench "$1"
 }
 
