@@ -30,10 +30,10 @@
 ## Configuration (global) variables go here
 infile=""
 outfile=""
-flag_multirun=""
+MULTIRUN_PATTERN="PACKAGE"
 
 ## Helper global variables go here
-MULTIRUN_PATTERN="PACKAGE"
+flag_multirun=""
 temp1=""
 temp2=""
 ##
@@ -116,6 +116,7 @@ function extract_data() {
     echo "This is NOT a multirun log"
     flag_multirun=0
   fi
+  # Call data extractor for dbench tool
   extract_data_dbench "$1"
 }
 
