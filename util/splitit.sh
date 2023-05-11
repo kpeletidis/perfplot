@@ -12,10 +12,10 @@ DATA_PATTERN="execute"
 flag_multirun=""
 
 function is_multirun_log() {
-  if [[ `grep "$MULTIRUN_PATTERN" $1 | wc -l` -gt 1 ]]; then
+  if [[ `grep -c "$MULTIRUN_PATTERN" $1` -gt 1 ]]; then
     echo "This log includes multiple runs. Splitting to individual logs..."
     return 0
-  elif  [[ `grep "$MULTIRUN_PATTERN" $1 | wc -l` -eq 1 ]]; then
+  elif  [[ `grep -c "$MULTIRUN_PATTERN" $1` -eq 1 ]]; then
     return 1
   else
     echo "is_multirun_log: Log doesn't include "$MULTIRUN_PATTERN""
