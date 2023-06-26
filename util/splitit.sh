@@ -49,6 +49,10 @@ function split_data() {
   ##echo [CALLING] extract_data_dbench "$1"
 }
 
-## TODO: Test that $1 is an existing file
-split_data $1
+if [ -f $1 ]; then
+  split_data $1
+else
+  echo "$1 is not a regular file. Exiting..."
+  exit 1
+fi
 
