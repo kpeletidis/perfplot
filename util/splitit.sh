@@ -49,6 +49,11 @@ function split_data() {
   ##echo [CALLING] extract_data_dbench "$1"
 }
 
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <log_file_to_split>"
+    exit 1
+fi
+
 if [ -f $1 ]; then
   split_data $1
 else
